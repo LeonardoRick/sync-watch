@@ -1,0 +1,1 @@
+java -jar dist/SyncWatch.jar -m 10:24:32
