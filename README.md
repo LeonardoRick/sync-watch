@@ -1,23 +1,22 @@
-========================
-DESCRI«√O SYNCWATCH
-========================
-
-Nome: Leonardo Rick de Souza Marcineiro
-TIA: 41607252
-
-Nome: Ricardo Daniel
-TIA: 
-
-projeto desenvolvido na disciplina de ComputaÁ„o DistribuÌda da Universidade Presbiteriana Mackenzie.
-
-Este programa tem como objetivo demonstrar de forma did·tica a execuÁ„o do algoritmo de Berkley para sincronizaÁ„o de relÛgios
+<h1>DESCRI√á√ÉO SYNCWATCH<h1>
 
 
-para executar o projeto, basta rodar o arquivo script presente com o nome Sync.sh
+**Nome:** Leonardo Rick de Souza Marcineiro
+**TIA:** 41607252
 
-O arquivo Sync.sh contÈm uma sequÍncia de instruÁıes que criam N processos para a execuÁ„o do programa.
+**Nome:** Ricardo Daniel
+**TIA:**
+<hr>
 
-args[0] = "-m" ou "-s" para indicar se o processo deve inicializar um Master ou um Slave
-args[1] = ip e porta do processo
-args[2] = tempo da m·quina que ser· enviado para o servidor e processar a sincronizaÁ„o
+Projeto desenvolvido na disciplina de Computa√ß√£o Distribu√≠da da Universidade Presbiteriana Mackenzie.
+
+Este programa tem como objetivo demonstrar de forma did√°tica a execu√ß√£o do algoritmo de Berkley para sincroniza√ß√£o de rel√≥gios.
+
+Para executar o projeto, basta rodar o arquivo script presente com o nome Sync.sh
+
+O arquivo Sync.sh cont√©m uma sequ√™ncia de instru√ß√µes que criam N processos para a execu√ß√£o do programa.
+
+<br>**args[0]** = "-m" ou "-s" para indicar se o processo deve inicializar um Master ou um Slave
+<br>**args[1]** = ip e porta do processo
+<br>**args[2]** = tempo da m√°quina que ser√° enviado para o servidor e processar a sincroniza√ß√£o
 
