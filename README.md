@@ -17,10 +17,11 @@ O arquivo Sync.sh contém uma sequência de instruções que criam N processos p
 ---
 >**args[0]** = "-m" ou "-s" para indicar se o processo deve inicializar um Master ou um Slave  
 #### Parâmetros para Master
->**args[1]** = ip e porta do processo  
->**args[2]** = tempo da máquina que será enviado para o servidor e processar a sincronização  
+>**args[1]** = tempo da máquina que será enviado para o servidor e processar a sincronização   
+>**args[2]** = arquivo de log onde serão gravadas as saídas
+
   
 #### Parâmetros para Slave
 >**args[1]** = ip e porta do processo  
 >**args[2]** = tempo da máquina que será enviado para o servidor e processar a sincronização  
-
+>**args[3]** = arquivo de log onde serão gravadas as saídas
