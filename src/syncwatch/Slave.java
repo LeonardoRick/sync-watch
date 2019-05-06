@@ -5,27 +5,32 @@
  */
 package syncwatch;
 
-import java.io.*;
+
 import java.net.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.Date;
 import java.util.Scanner;
 
-public class Slave {
+public class Slave extends Log {
    String ip; 
    int port;
    String time;
-    public Slave(String ipPort, String time) throws ParseException {
+
+    /**
+     *
+     * @param ipPort
+     * @param time
+     * @param file
+     * @throws ParseException
+     */
+    public Slave(String ipPort, String time, String file) throws Exception {
+        super(file);
         this.ip = ipPort.split(":")[0];
         this.port = Integer.parseInt(ipPort.split(":")[1]);
         this.time = time;
-
     }
    
     public void init() throws Exception {
-        System.out.println("Client");
+        print("Client");
 
         DatagramSocket clientSocket = new DatagramSocket(port);
         Scanner scanner = new Scanner(System.in);
@@ -38,19 +43,20 @@ public class Slave {
         byte[] receiveData = new byte[1024];
 
 
-        System.out.println("My start time: " + time);
+        print("My start time: " + time);
 
-        toSend = time;
-        sendData = toSend.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);     
-        clientSocket.send(sendPacket);
-        while(true) { 
+        while(true) {
+            toSend = time;
+            sendData = toSend.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);     
+            clientSocket.send(sendPacket);
+            
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             clientSocket.receive(receivePacket);
             sentence = new String( receivePacket.getData());
             sentence = sentence.trim();
             time = sentence;
-            System.out.println("My new time: " + time);
+            print("My new time: " + time);
         }
     }
 }

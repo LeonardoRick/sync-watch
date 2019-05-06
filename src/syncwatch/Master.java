@@ -13,11 +13,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
-import java.lang.Thread;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class Master extends Thread {
+public class Master extends Log {
 
     String time;
     String startClock;
@@ -29,41 +26,42 @@ public class Master extends Thread {
     ArrayList<Integer> ports = new ArrayList<>();
     ArrayList<InetAddress> ips = new ArrayList<>();
     
-    public Master(String time){
+    public Master(String time, String file) throws Exception {
+        super(file);
         this.time = time;
         startClock = timeNow();
     }
    
     public void init() throws Exception {
-        System.out.println("Server");
-        System.out.println("Master time: " + time);
+        print("Server");
+        print("Master time: " + time);
+        // setting stantard server data
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(System.in));
         DatagramSocket serverSocket = new DatagramSocket(9876);
+        
         
         while(true) {
             // receiving
              byte[] receiveData = new byte[1024];
-             
-
              DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
              serverSocket.receive(receivePacket);
              String sentence = new String( receivePacket.getData());
              sentence = sentence.trim();
              
-             System.out.println("\nreceiving");
+             print("\nreceiving");
              if(!sentence.equals("-B")){
                 id += 1;
-                System.out.println("id Packet: " + id);
+                print("id Packet: " + id);
 
-                System.out.println("From Client: " + sentence);
+                print("From Client: " + sentence);
                 long diff = getDiff(time, sentence);
-                 System.out.println("Difference of client and master: " + diff);
+                 print("Difference of client and master: " + diff);
                 if (diff < 20 && diff > -20) {
                     diffs.add(getDiff(time, sentence));
 
                 } else {
                     diffs.add(getDiff(time, time));
-                    System.out.println("Not Considered (diff > 20s)");
+                    print("Not Considered (diff > 20s)");
                 }
                 ports.add(receivePacket.getPort());
                 ips.add(receivePacket.getAddress());                
@@ -71,7 +69,7 @@ public class Master extends Thread {
             
             // sending
             wait = getDiff(timeNow(), sumTime(startClock, formatTime(10))); // waiting 10s
-            if(!watingToSend) {
+            if(!watingToSend) { // if already waiting to send, don't request again
                 waitToSend(serverSocket);
             }
          }
@@ -82,42 +80,42 @@ public class Master extends Thread {
             @Override
             public void run() {
                 watingToSend = true;
-                long miliWait = wait * 1000;
-                if(miliWait > 10000 || miliWait < 0){ //making sure to wait 10s
+                long miliWait = wait * 1000; // considering time spend until now
+                if(miliWait > 10000 || miliWait < 0){ // making sure to wait 10s
                     miliWait = 10000; 
                 }
                 try {
                     Thread.sleep(miliWait);
                 } catch (InterruptedException e) {
-                    System.out.println(e.toString());
+                    print(e.toString());
                 }
                 try {
-                    sendData(serverSocket);
+                    sendData(serverSocket); // send data after wait
                 } catch (Exception e) {
-                    System.out.println(e.toString());
+                    print(e.toString());
                 }
                 clearSending();
             }
         }.start();
     }
     private void sendData (DatagramSocket serverSocket) throws Exception {
-        System.out.println("\nsending");
-        System.out.println("id Packet finish: " + id);
-        System.out.println("Old master time: " + time );
+        print("\nsending");
+        print("id last Packet: " + id);
+        print("Old master time: " + time );
 
         byte[] sendData = new byte[1024];
         long media = calcMedia(diffs);
         String sMedia = formatTime(media);
 
-        System.out.println("Time to adjust: " + sMedia);
+        print("Time to adjust: " + sMedia);
 
         time = sumTime(time, sMedia); // correcting time of master
-        time = sumTime(time, "00:00:10"); //correcting time from Thread.sleep(10000);
+        time = sumTime(time, "00:00:10"); // correcting time from Thread.sleep(10000);
 
         String newTime = (String) time;
-        System.out.println("New time of all watches time (considering passed 10s): " + time);
+        print("New time of all watches time (considering passed 10s): " + time);
 
-        for(int i = 0; i < ips.size(); i ++) {
+        for(int i = 0; i < ips.size(); i ++) { // recover ips and ports from slaves to answer new time
             InetAddress IPAddress = ips.get(i);
             int port = ports.get(i);
 
@@ -160,7 +158,6 @@ public class Master extends Thread {
         return result;
     }
 
-    
     private long calcMedia(ArrayList<Long> diffs){
         int total = 0;
         for(int i = 0; i < diffs.size(); i++) {
