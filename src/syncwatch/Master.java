@@ -60,11 +60,13 @@ public class Master extends Thread {
                  System.out.println("Difference of client and master: " + diff);
                 if (diff < 20 && diff > -20) {
                     diffs.add(getDiff(time, sentence));
-                    ports.add(receivePacket.getPort());
-                    ips.add(receivePacket.getAddress());
+
                 } else {
+                    diffs.add(getDiff(time, time));
                     System.out.println("Not Considered (diff > 20s)");
                 }
+                ports.add(receivePacket.getPort());
+                ips.add(receivePacket.getAddress());                
              }
             
             // sending
