@@ -1,13 +1,5 @@
 # DESCRIÇÃO SYNCWATCH
 
-**Nome:** Leonardo Rick de Souza Marcineiro  
-**TIA:** 41607252 
-
-**Nome:** Ricardo Daniel  
-**TIA:** 31544185
-
-Projeto desenvolvido na disciplina de Computação Distribuída da Universidade Presbiteriana Mackenzie.
-
 Este programa tem como objetivo demonstrar de forma didática a execução do algoritmo de Berkley para sincronização de relógios.
 
 Para executar o projeto, basta rodar o arquivo script presente com o nome Sync.sh
